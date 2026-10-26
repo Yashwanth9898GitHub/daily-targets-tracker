@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f8fa">
+<meta name="description" content="A simple daily target tracker with date-wise progress, priorities, and local browser storage.">
+<title>Daily Targets</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<div class="shell">
+  <header>
+    <div class="brand"><span class="brand-mark" aria-hidden="true">🎯</span> Daily Targets</div>
+    <div class="header-actions"><button id="exportBtn" title="Download a backup">Export</button><button id="importBtn" title="Restore a backup">Import</button><input id="importFile" type="file" accept="application/json,.json" hidden></div>
+  </header>
+  <main>
+    <section class="intro"><div><h1>A little focus. Real progress.</h1><p class="muted" id="headingDate"></p></div><button class="primary" id="addTarget">＋ Add target</button></section>
+    <div class="date-controls"><button class="icon" id="prevDay" aria-label="Previous day" title="Previous day">‹</button><input type="date" id="selectedDate" aria-label="Dashboard date" required><button class="icon" id="nextDay" aria-label="Next day" title="Next day">›</button><button id="todayBtn">Today</button></div>
+    <section class="overview" aria-label="Daily progress">
+      <div><div class="progress-top"><div><div class="eyebrow">Daily progress</div><p id="progressDate" class="muted"></p></div><span class="percentage" id="dailyPercent">0%</span></div><progress id="dailyProgress" value="0" max="100" aria-label="Targets completed for selected day"></progress><p id="progressMessage" class="muted" aria-live="polite"></p></div>
+      <div class="metrics"><div><span class="metric-number" id="totalCount">0</span><span class="metric-label">Targets</span></div><div><span class="metric-number" id="progressCount">0</span><span class="metric-label">In progress</span></div><div><span class="metric-number" id="doneCount">0</span><span class="metric-label">Completed</span></div></div>
+    </section>
+    <nav class="week" id="weekStrip" aria-label="Daily progress by date"></nav>
+    <section aria-labelledby="targetsHeading"><div class="section-head"><h2 id="targetsHeading">Your targets</h2><div class="tabs" aria-label="Target view"><button id="dayView" aria-pressed="true">Selected day</button><button id="allView" aria-pressed="false">All dates</button></div></div>
+      <div class="toolbar"><input id="search" type="search" placeholder="Search targets…" aria-label="Search targets"><select id="filterStatus" aria-label="Filter by status"><option value="All">All statuses</option><option>Not started</option><option>In progress</option><option>Blocked</option><option>Completed</option></select><select id="filterType" aria-label="Filter by target size"><option value="All">All sizes</option><option>Major</option><option>Minor</option></select></div>
+      <div id="taskList"></div>
+    </section>
+  </main>
+  <footer><p id="storageNotice">Saved only in this browser on this device. Export a backup to keep or transfer your targets.</p></footer>
+</div>
+<dialog id="targetDialog" aria-labelledby="formTitle">
+  <div class="dialog-head"><h2 id="formTitle">Add a target</h2><button class="icon" id="closeDialog" aria-label="Close" title="Close">×</button></div>
+  <form id="taskForm">
+    <input type="hidden" id="taskId">
+    <div class="field"><label for="taskName">Target *</label><input id="taskName" required maxlength="180" placeholder="What do you want to achieve?" autofocus></div>
+    <div class="two"><div class="field"><label for="target">Target date *</label><input id="target" type="date" required></div><div class="field"><label for="importance">Priority</label><select id="importance"><option>High</option><option selected>Medium</option><option>Low</option></select></div></div>
+    <div class="field"><label for="details">Notes</label><textarea id="details" placeholder="Next steps, ideas, or anything worth remembering"></textarea></div>
+    <div class="two"><div class="field"><label for="status">Status</label><select id="status"><option>Not started</option><option>In progress</option><option>Blocked</option><option>Completed</option></select></div><div class="field"><label for="taskType">Target size</label><select id="taskType"><option>Major</option><option>Minor</option></select></div></div>
+    <details class="optional" id="extraFields"><summary>More details</summary><div class="field"><label for="category">Category</label><input id="category" maxlength="60" placeholder="Work, personal, learning…"></div><div class="field"><label for="ticketLinks">Related links</label><textarea id="ticketLinks" placeholder="One https:// link per line"></textarea></div></details>
+    <div class="form-actions"><button type="button" id="cancelBtn">Cancel</button><button class="primary" type="submit" id="saveBtn">Save target</button></div>
+  </form>
+</dialog>
+<div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
